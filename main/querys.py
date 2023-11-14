@@ -21,22 +21,10 @@ def sql_crear_cuenta(username, password, mail):
         conn = sqlite3.connect('pure_valorant.db')
         cursor = conn.cursor()
 
-        # Verifica si la tabla existe, si no, la crea
-        cursor.execute('''
-            CREATE TABLE IF NOT EXISTS CUENTAS (
-                ID INTEGER PRIMARY KEY AUTOINCREMENT,
-                USERNAME TEXT NOT NULL,
-                PASSWORD TEXT NOT NULL,
-                MAIL TEXT NOT NULL,
-                TOKEN_CONEXION TEXT,
-                RIOT TEXT
-            )
-        ''')
-
         # Inserta la nueva cuenta
         cursor.execute('''
-            INSERT INTO CUENTAS (USERNAME, PASSWORD, MAIL, TOKEN_CONEXION, RIOT)
-            VALUES (?, ?, ?, ?, ?)
+            INSERT INTO CUENTAS (USERNAME, PASSWORD, MAIL, TOKEN_CONEXION)
+            VALUES (?, ?, ?, ?)
         ''', (username, password, mail, None, None))
 
         # Confirma la transacción y cierra la conexión
@@ -51,18 +39,6 @@ def sql_obtener_cuenta_by_nombre(username):
     # Conecta a la base de datos
     conn = sqlite3.connect('pure_valorant.db')
     cursor = conn.cursor()
-
-    # Verifica si la tabla existe, si no, la crea
-    cursor.execute('''
-        CREATE TABLE IF NOT EXISTS CUENTAS (
-            ID INTEGER PRIMARY KEY AUTOINCREMENT,
-            USERNAME TEXT NOT NULL,
-            PASSWORD TEXT NOT NULL,
-            MAIL TEXT NOT NULL,
-            TOKEN_CONEXION TEXT,
-            RIOT TEXT
-        )
-    ''')
 
     # Ejecuta la consulta
     query = f"SELECT * FROM CUENTAS WHERE USERNAME='{username}';"
@@ -80,18 +56,6 @@ def sql_obtener_cuenta_by_mail(mail):
     conn = sqlite3.connect('pure_valorant.db')
     cursor = conn.cursor()
 
-    # Verifica si la tabla existe, si no, la crea
-    cursor.execute('''
-        CREATE TABLE IF NOT EXISTS CUENTAS (
-            ID INTEGER PRIMARY KEY AUTOINCREMENT,
-            USERNAME TEXT NOT NULL,
-            PASSWORD TEXT NOT NULL,
-            MAIL TEXT NOT NULL,
-            TOKEN_CONEXION TEXT NOT NULL,
-            RIOT TEXT NOT NULL
-        )
-    ''')
-
     # Ejecuta la consulta
     query = f"SELECT * FROM CUENTAS WHERE MAIL='{mail}';"
     cursor.execute(query)
@@ -108,18 +72,6 @@ def sql_obtener_cuenta_by_hash(hash):
     conn = sqlite3.connect('pure_valorant.db')
     cursor = conn.cursor()
 
-    # Verifica si la tabla existe, si no, la crea
-    cursor.execute('''
-        CREATE TABLE IF NOT EXISTS CUENTAS (
-            ID INTEGER PRIMARY KEY AUTOINCREMENT,
-            USERNAME TEXT NOT NULL,
-            PASSWORD TEXT NOT NULL,
-            MAIL TEXT NOT NULL,
-            TOKEN_CONEXION TEXT NOT NULL,
-            RIOT TEXT NOT NULL
-        )
-    ''')
-
     # Ejecuta la consulta
     query = f"SELECT * FROM CUENTAS WHERE TOKEN_CONEXION='{hash}';"
     cursor.execute(query)
@@ -135,7 +87,17 @@ def sql_insert_hash(hash, username):
     conn = sqlite3.connect('pure_valorant.db')
     cursor = conn.cursor()
     query = f'UPDATE CUENTAS set TOKEN_CONEXION = "{hash}" WHERE USERNAME = "{username}"'
-    print(query)
     cursor.execute(query)
     conn.commit()
     conn.close()
+
+def sql_crear_curso(nombre, id_creador):
+    conn = sqlite3.connect('pure_valorant.db')
+    cursor = conn.cursor()
+    # Inserta el nuevo curso
+    query = f" INSERT INTO CURSOS (NOMBRE_CURSO, ID_CURSO) VALUES ({nombre}, {id_creador})"
+    
+    cursor.execute(query)
+    conn.commit()
+    conn.close()
+
