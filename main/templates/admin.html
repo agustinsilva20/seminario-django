@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin</title>
+</head>
+<body>
+    <h1>Tabla de registros</h1>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Username</th>
+                <th>Password</th>
+                <th>Mail</th>
+                <th>Token</th>
+                <th>Riot RSO</th>
+                <!-- Agrega más encabezados según tu estructura de datos -->
+            </tr>
+        </thead>
+        <tbody>
+            {% for resultado in resultados %}
+            <tr>
+                <td>{{ resultado.0 }}</td>  <!-- ID -->
+                <td>{{ resultado.1 }}</td>  <!-- USUARIO -->
+                <td>{{ resultado.2 }}</td>  <!-- PASSWORD -->
+                <td>{{ resultado.3 }}</td>  <!-- MAIL -->
+                <td>{{ resultado.4 }}</td>  <!-- TOKEN AUTH HASH -->
+                <td>{{ resultado.5 }}</td>  <!-- RIOT RSO TOKEN -->
+
+                <!-- Agrega más celdas según tu estructura de datos -->
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

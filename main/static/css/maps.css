@@ -1,0 +1,26 @@
+.map-cont{
+    height:100vh;
+    padding-left: 80px;
+    padding-right: 80px;
+    padding-top: 40px;padding-bottom: 40px;
+    color: white;
+}
+
+.map-cont h2{
+    font-weight: 200; font-size: 30px;
+}
+
+.map-name{
+    font-weight: bold; font-size: 35px;
+}
+
+.map-div{
+    display: flex;align-items: flex-start;justify-content: space-between;
+}
+
+.map{
+    background-image: url(../src/map.png);
+    height: 80vh;
+    width: 1000px;
+    background-repeat: no-repeat; background-size: contain;
+}

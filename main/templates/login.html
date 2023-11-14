@@ -1,0 +1,39 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Inicio de sesion</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/inicio.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/login.css' %}">
+
+</head>
+<body>
+
+    <div class="form-login">
+        <h1>Formulario de Inicio de Sesion</h1>
+
+        <form id="registrationForm" method="post" action="/login/">
+            {% csrf_token %}  <!-- Asegúrate de incluir el token CSRF si estás en un entorno de Django -->
+
+            <label for="username">Nombre de usuario:</label><br>
+            
+            <input type="text" id="id_username" name="username" required value={{valor_user}}><br><br>
+
+            <label for="password">Contraseña:</label><br>
+            <input type="password" id="id_password" name="password" required value={{valor_password1}}><br><br>
+
+            <p>{{mensaje}}</p>
+
+            <input type="submit" value="Log In">
+            
+        </form>
+        <p>Sos nuevo? <a href="/registro">Registrate</a></p>
+
+    </div>
+    
+
+</body>
+</html>

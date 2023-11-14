@@ -1,0 +1,28 @@
+.policie{
+    width: 70%;
+    min-height: 80vh;
+    height: auto;
+    background-color: rgba(0, 0, 0, 0.411);
+    margin: auto;
+    padding: 50px;
+}
+
+.policie{
+    display: flex;justify-content: center;align-items: flex-start;flex-direction: column;
+    
+}
+.container-policie{
+    width: 100%;
+    height: 93%;
+    display: flex;justify-content: center;align-items: center;
+}
+.policie{
+    color: white;font-size: 15px;font-weight: normal;
+}
+
+.policie h3{
+    font-size: 25px;
+}
+.policie p{
+    margin-bottom: 5px;font-size: 16px;
+}
