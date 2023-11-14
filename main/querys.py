@@ -111,3 +111,35 @@ def sql_unirse_curso(id_curso, id_persona):
     cursor.execute(query)
     conn.commit()
     conn.close()
+
+def sql_get_cursos_owner(id_persona):
+    # Conecta a la base de datos
+    conn = sqlite3.connect('pure_valorant.db')
+    cursor = conn.cursor()
+
+    # Ejecuta la consulta
+    query = f"SELECT * FROM CURSOS WHERE ID_CUENTA='{id_persona}';"
+    cursor.execute(query)
+
+    # Obtiene los resultados
+    resultados = cursor.fetchall()
+
+    # Cierra la conexión
+    conn.close()
+    return resultados # Devuelve una lista
+
+def sql_get_cursos_alumno(id_persona):
+    # Conecta a la base de datos
+    conn = sqlite3.connect('pure_valorant.db')
+    cursor = conn.cursor()
+
+    # Ejecuta la consulta
+    query = f"SELECT * FROM INSCRIPCIONES LEFT JOIN CURSOS ON INSCRIPCIONES.ID_CURSO = CURSOS.ID WHERE INSCRIPCIONES.ID_CUENTA='{id_persona}';"
+    cursor.execute(query)
+
+    # Obtiene los resultados
+    resultados = cursor.fetchall()
+
+    # Cierra la conexión
+    conn.close()
+    return resultados # Devuelve una lista

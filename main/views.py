@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from .decorators import login_obligatorio
-from .querys import sql_obtener_cuenta_by_nombre, sql_obtener_cuenta_by_mail, sql_obtener_cuenta_by_hash, sql_insert_hash,sql_crear_cuenta,select_all
+from .querys import *
 from django.http import HttpResponse
 from django.views import View
 import string
@@ -20,14 +20,33 @@ def admin(request):
 
 @login_obligatorio
 def home(request):
-    query = sql_obtener_cuenta_by_hash(request.COOKIES.get('pure_valorant_token'))
-    dto = {"riot_token": "",}
+    cuenta = sql_obtener_cuenta_by_hash(request.COOKIES.get('pure_valorant_token'))
+    dto = {
+            "curso_owner": "",
+            "curso_alumno": ""
+        }
     try:
-        riot_token = query[0][5]
-        if riot_token is None:
-            dto ["riot_token"] =  "Necesitas vincular tu cuenta de Riot con Pure Valorant: Haz click para continuar"
+        id_persona = cuenta[0][0]
+
+        # Obtengo los cursos
+        curso_owner = sql_get_cursos_owner(id_persona)
+        curso_alumno = sql_get_cursos_alumno(id_persona)
+
+        if len(curso_owner) == 0:
+            dto["curso_owner"] = "No tienes cursos creados"
+        else:
+            dto["curso_owner"] = curso_owner
+        
+        if len(curso_owner) == 0:
+            dto["curso_alumno"] = "No perteneces a ningun curso"
+        else:
+            dto["curso_alumno"] = curso_alumno
+        print(curso_alumno)
+
         return render(request, 'home.html',dto)
-    except:
+    except Exception as e:
+        # Cambiar a error
+        print(e)
         return redirect('login')
 
 
