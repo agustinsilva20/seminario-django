@@ -96,8 +96,18 @@ def sql_crear_curso(nombre, id_creador):
     cursor = conn.cursor()
     # Inserta el nuevo curso
     query = f" INSERT INTO CURSOS (NOMBRE_CURSO, ID_CURSO) VALUES ({nombre}, {id_creador})"
-    
+
     cursor.execute(query)
     conn.commit()
     conn.close()
 
+
+def sql_unirse_curso(id_curso, id_persona):
+    conn = sqlite3.connect('pure_valorant.db')
+    cursor = conn.cursor()
+    # Inserta el nuevo curso
+    query = f" INSERT INTO INSCRIPCIONES (ID_CURSO, ID_CUENTA) VALUES ({id_curso}, {id_persona})"
+
+    cursor.execute(query)
+    conn.commit()
+    conn.close()
