@@ -195,7 +195,6 @@ def sql_join_curso(codigo, idcuenta):
     cursor.execute(query)
     resultados = cursor.fetchall()
 
-    print(resultados)
     idcurso = resultados[0][0]
     query = f"INSERT INTO INSCRIPCIONES (ID_CURSO, ID_CUENTA) VALUES ({idcurso}, {idcuenta})"
     cursor.execute(query)
@@ -255,6 +254,15 @@ def sql_get_nombre(idpersona):
     conn.close()
 
     return resultados
+
+def sql_crear_encuesta(curso_id, pregunta1, pregunta2, pregunta3, pregunta4, pregunta5, pregunta6, pregunta7):
+    # Conecta a la base de datos
+    conn = sqlite3.connect('pure_valorant.db')
+    cursor = conn.cursor()
+    query = f"INSERT INTO ENCUESTAS (ID_CURSO, PREGUNTA1, PREGUNTA2, PREGUNTA3, PREGUNTA4, PREGUNTA5, PREGUNTA6, PREGUNTA7) VALUES ('{curso_id}', '{pregunta1}','{pregunta2}','{pregunta3}','{pregunta4}','{pregunta5}','{pregunta6}','{pregunta7}')"
+    cursor.execute(query)
+    conn.commit()
+    conn.close()
 
 
 

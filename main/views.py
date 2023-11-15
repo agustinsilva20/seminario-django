@@ -243,6 +243,43 @@ def detalle_curso(request, curso_id):
         return render(request, "curso_docente.html", dto)
     else:
         return render(request, "curso_docente.html", dto)
+    
+@login_obligatorio
+def crear_encuesta(request,curso_id):
+    cuenta = sql_obtener_cuenta_by_hash(request.COOKIES.get('pure_valorant_token'))
+    idcuenta = cuenta[0][0]
+    # Analizo si el usuario es Owner del curso
+    owner_query = sql_get_cursos_owner(curso_id)
+    owner = True # Change
+    if len(owner_query)>0:
+        owner = True
+
+    if not owner:
+        return HttpResponse(f'El usuario no es administrador del curso')
+    
+    if request.method == "GET":
+        
+        
+        dto = {
+            "idcurso": curso_id
+        }
+        return render(request, "crear_encuesta.html", dto)
+    
+    elif request.method == "POST":
+        pregunta1 = request.POST.get('pregunta1')
+        pregunta2 = request.POST.get('pregunta2')
+        pregunta3 = request.POST.get('pregunta3')
+        pregunta4 = request.POST.get('pregunta4')
+        pregunta5 = request.POST.get('pregunta5')
+        pregunta6 = request.POST.get('pregunta6')
+        pregunta7 = request.POST.get('pregunta7')
+
+        sql_crear_encuesta(curso_id, pregunta1, pregunta2, pregunta3, pregunta4, pregunta5, pregunta6, pregunta7)
+
+        return redirect('home')
+    
+
+
 
 
 

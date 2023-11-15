@@ -1,0 +1,49 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Registro</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/inicio.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/login.css' %}">
+
+</head>
+<body>
+
+    <div class="form-login">
+        <h1>Formulario de Crear encuesta</h1>
+
+        <form id="registrationForm" method="post" action="/crearencuesta/{{idcurso}}/">
+            {% csrf_token %}  <!-- Asegúrate de incluir el token CSRF si estás en un entorno de Django -->
+
+            <label for="username">Pregunta1:</label><br>
+            <input type="text" id="pregunta1" name="pregunta1" required ><br><br>
+
+            <label for="username">Pregunta2:</label><br>
+            <input type="text" id="pregunta2" name="pregunta2" required ><br><br>
+
+            <label for="username">Pregunta3:</label><br>
+            <input type="text" id="pregunta3" name="pregunta3" required ><br><br>
+
+            <label for="username">Pregunta4:</label><br>
+            <input type="text" id="pregunta4" name="pregunta4" required ><br><br>
+
+            <label for="username">Pregunta5:</label><br>
+            <input type="text" id="pregunta5" name="pregunta5" required ><br><br>
+
+            <label for="username">Pregunta6:</label><br>
+            <input type="text" id="pregunta6" name="pregunta6" required ><br><br>
+
+            <label for="username">Pregunta7:</label><br>
+            <input type="text" id="pregunta7" name="pregunta7" required ><br><br>
+
+            <input type="submit" value="Enviar preguntas">
+            
+        </form>
+    </div>
+
+
+</body>
+</html>

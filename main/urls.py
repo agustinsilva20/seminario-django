@@ -16,7 +16,8 @@ urlpatterns = [
     path('oauth-callback/', OAuthCallbackView.as_view(), name='oauth_callback'),
     path('crearcurso/', views.crearcurso, name='crearcurso'),
     path('joincurso/', views.joincurso, name='joincurso'),
-    path('cursos/<int:curso_id>/', views.detalle_curso, name='detalle_curso')
+    path('cursos/<int:curso_id>/', views.detalle_curso, name='detalle_curso'),
+    path('crearencuesta/<int:curso_id>/', views.crear_encuesta, name='crear_encuesta')
     
 ]
 # Maneja errores 404

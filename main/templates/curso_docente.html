@@ -21,8 +21,9 @@
     <p>Curso: <span>{{curso}}</span></p>
     <p>Cantidad de alumnos: <span>{{cantidad_alumnos}}</span></p><a href="" style="color: blue;">Acceder al listado de alumnos</a>
     <p>Docente: <span>{{docente}}</span></p>
+    <p>ID: <span>{{id}}</span></p>
     {% if not encuesta_realizada %}
-        <a href="" style="color: blue;">Aun no has creado la encuesta para tus alumnos. Crear encuesta para los alumnos</a>
+        <a href="/crearencuesta/{{id}}" style="color: blue;">Aun no has creado la encuesta para tus alumnos. Crear encuesta para los alumnos</a>
     {% endif %}
 </body>
 </html>
