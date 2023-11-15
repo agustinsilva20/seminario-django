@@ -43,7 +43,7 @@
             </form>
             <p>{{curso_alumno_error}}</p>
             {% for item in curso_alumno %}
-                    <li>{{ item.1 }}</li>
+                    <a href="/cursos/{{ item.1 }}" style="color: green;"><li>Curso: {{ item.4}} </li></a>
             {% endfor %}
             <footer>
                 footer

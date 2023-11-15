@@ -181,7 +181,8 @@ def crearcurso(request):
         nombrecurso = nombrecurso.replace(" ", "_") # Saco los espacios en blanco
         sql_crear_curso(nombrecurso, idcuenta)
         return redirect('home')
-    
+
+@login_obligatorio  
 def joincurso(request):
     if request.method == "POST":
         cuenta = sql_obtener_cuenta_by_hash(request.COOKIES.get('pure_valorant_token'))
@@ -208,6 +209,19 @@ class OAuthRedirectView(View):
         # Redirigir a la URL de redirección
         print(oauth_redirect_url)
         return redirect(oauth_redirect_url)
+
+@login_obligatorio
+def detalle_curso(request, curso_id):
+    cuenta = sql_obtener_cuenta_by_hash(request.COOKIES.get('pure_valorant_token'))
+    idcuenta = cuenta[0][0]
+
+    # Analizo si el usuario pertenece al curso
+    query = sql_get_alumno_in_curso(curso_id, idcuenta)
+    if len(query) == 0:
+        return HttpResponse(f'El usuario no pertenece a ese curso')
+
+    return HttpResponse(f'Detalle del curso con ID: {curso_id}')
+
 class OAuthCallbackView(View):
     def get(self, request, *args, **kwargs):
         authorization_code = request.GET.get('code')

@@ -183,6 +183,21 @@ def sql_join_curso(idcurso, idcuenta):
     cursor.execute(query)
     conn.commit()
     conn.close()
+
+def sql_get_alumno_in_curso(idcurso, idpersona):
+    # Conecta a la base de datos
+    conn = sqlite3.connect('pure_valorant.db')
+    cursor = conn.cursor()
+
+    # Verifico si existe el curso
+    query = f"SELECT * FROM INSCRIPCIONES WHERE ID_CURSO='{idcurso}' AND ID_CUENTA='{idpersona}';"
+    cursor.execute(query)
+    resultados = cursor.fetchall()
+
+    # Cierra la conexión
+    conn.close()
+
+    return resultados
     
 
 
