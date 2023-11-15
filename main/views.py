@@ -253,13 +253,10 @@ def detalle_curso(request, curso_id):
     }
 
     
-    print(curso_info)
-    # Hacer algo con la información obtenida del curso
-    ...
     
 
 
-    return HttpResponse(f'Detalle del curso con ID: {curso_id}')
+    return HttpResponse(f'Detalle del curso con ID: {curso_id} - Codigo de invitacion {dto["codigo"]}')
 
 class OAuthCallbackView(View):
     def get(self, request, *args, **kwargs):

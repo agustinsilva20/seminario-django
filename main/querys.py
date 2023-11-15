@@ -105,11 +105,12 @@ def sql_verificar_codigo(codigo):
     conn = sqlite3.connect('pure_valorant.db')
     cursor = conn.cursor()
     # Inserta el nuevo curso
-    query = f' SELECT * FROM CURSOS WHERE CODIGO = "{codigo}")'
-
+    query = f' SELECT * FROM CURSOS WHERE CODIGO = "{codigo}"'
     cursor.execute(query)
+    resultados = cursor.fetchall()
     conn.commit()
     conn.close()
+    return resultados
 
 
 
@@ -155,13 +156,13 @@ def sql_get_cursos_alumno(id_persona):
     conn.close()
     return resultados # Devuelve una lista
 
-def sql_join_curso(idcurso, idcuenta):
+def sql_join_curso(codigo, idcuenta):
     # Conecta a la base de datos
     conn = sqlite3.connect('pure_valorant.db')
     cursor = conn.cursor()
 
     # Verifico si existe el curso
-    query = f"SELECT * FROM CURSOS WHERE ID='{idcurso}';"
+    query = f"SELECT * FROM CURSOS WHERE CODIGO='{codigo}';"
     cursor.execute(query)
     resultados = cursor.fetchall()
 
@@ -170,7 +171,7 @@ def sql_join_curso(idcurso, idcuenta):
         return
     
     # Verifico que el alumno no esta inscripto
-    query = f"SELECT * FROM INSCRIPCIONES LEFT JOIN CURSOS ON INSCRIPCIONES.ID_CURSO = CURSOS.ID WHERE INSCRIPCIONES.ID_CUENTA='{idcuenta}' AND CURSOS.ID='{idcurso}';"
+    query = f"SELECT * FROM INSCRIPCIONES LEFT JOIN CURSOS ON INSCRIPCIONES.ID_CURSO = CURSOS.ID WHERE INSCRIPCIONES.ID_CUENTA='{idcuenta}' AND CURSOS.CODIGO='{codigo}';"
     cursor.execute(query)
     resultados = cursor.fetchall()
 
@@ -179,7 +180,7 @@ def sql_join_curso(idcurso, idcuenta):
         return
     
     # Verifica que no sea owner
-    query = f"SELECT * FROM CURSOS WHERE ID_CUENTA='{idcuenta}' AND ID='{idcurso}';"
+    query = f"SELECT * FROM CURSOS WHERE ID_CUENTA='{idcuenta}' AND CODIGO='{codigo}';"
     cursor.execute(query)
     resultados = cursor.fetchall()
     if len(resultados)>0:
@@ -189,6 +190,13 @@ def sql_join_curso(idcurso, idcuenta):
     
     # Inserto el nuevo registro
     print("Insertando alumno")
+
+    query = f"SELECT ID FROM CURSOS WHERE CODIGO='{codigo}';"
+    cursor.execute(query)
+    resultados = cursor.fetchall()
+
+    print(resultados)
+    idcurso = resultados[0][0]
     query = f"INSERT INTO INSCRIPCIONES (ID_CURSO, ID_CUENTA) VALUES ({idcurso}, {idcuenta})"
     cursor.execute(query)
     conn.commit()
