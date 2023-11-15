@@ -203,6 +203,49 @@ def joincurso(request):
         sql_join_curso(idcurso, idcuenta)
     return redirect('home')
 
+@login_obligatorio
+def detalle_curso(request, curso_id):
+    cuenta = sql_obtener_cuenta_by_hash(request.COOKIES.get('pure_valorant_token'))
+    idcuenta = cuenta[0][0]
+
+    # Analizo si el usuario es Owner del curso
+    owner_query = sql_get_cursos_owner(curso_id)
+    owner = False
+    if len(owner_query)>0:
+        owner = True
+
+    # Analizo si el usuario pertenece al curso
+    query = sql_get_alumno_in_curso(curso_id, idcuenta)
+    if len(query) == 0:
+        if not owner:
+            return HttpResponse(f'El usuario no pertenece a ese curso')
+        
+    # Obtengo la informacion del curso
+    curso_info = sql_get_curso_info(curso_id)
+    alumnos = sql_get_alumnos(curso_id)
+    nombre = sql_get_nombre(idcuenta)
+
+    print(curso_info)
+    # Preparo el DTO
+    dto = {
+        "owner": owner,
+        "id": curso_info[0][0],
+        "materia": curso_info[0][1],
+        "colegio": curso_info[0][3],
+        "curso": curso_info[0][4],
+        "codigo": curso_info[0][5],
+        "cantidad_alumnos": len(alumnos),
+        "docente": nombre[0][1],
+        "encuesta_realizada": False
+    }
+
+    if owner:
+        return render(request, "curso_docente.html", dto)
+    else:
+        return render(request, "curso_docente.html", dto)
+
+
+
 class OAuthRedirectView(View):
     def get(self, request, *args, **kwargs):
         # URL de redirección a OAuth
@@ -223,40 +266,7 @@ class OAuthRedirectView(View):
         print(oauth_redirect_url)
         return redirect(oauth_redirect_url)
 
-@login_obligatorio
-def detalle_curso(request, curso_id):
-    cuenta = sql_obtener_cuenta_by_hash(request.COOKIES.get('pure_valorant_token'))
-    idcuenta = cuenta[0][0]
 
-    # Analizo si el usuario es Owner del curso
-    owner_query = sql_get_cursos_owner(curso_id)
-    owner = False
-    if len(owner_query)>0:
-        owner = True
-
-    # Analizo si el usuario pertenece al curso
-    query = sql_get_alumno_in_curso(curso_id, idcuenta)
-    if len(query) == 0:
-        if not owner:
-            return HttpResponse(f'El usuario no pertenece a ese curso')
-        
-    # Obtengo la informacion del curso
-    curso_info = sql_get_curso_info(curso_id)
-
-    # Preparo el DTO
-    dto = {
-        "owner": owner,
-        "materia": curso_info[0][4],
-        "colegio": curso_info[0][6],
-        "curso": curso_info[0][7],
-        "codigo": curso_info[0][8],
-    }
-
-    
-    
-
-
-    return HttpResponse(f'Detalle del curso con ID: {curso_id} - Codigo de invitacion {dto["codigo"]}')
 
 class OAuthCallbackView(View):
     def get(self, request, *args, **kwargs):

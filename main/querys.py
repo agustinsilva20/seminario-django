@@ -221,7 +221,7 @@ def sql_get_curso_info(idcurso):
     # Conecta a la base de datos
     conn = sqlite3.connect('pure_valorant.db')
     cursor = conn.cursor()
-    query = query = f"SELECT * FROM INSCRIPCIONES LEFT JOIN CURSOS ON INSCRIPCIONES.ID_CURSO = CURSOS.ID WHERE CURSOS.ID='{idcurso}';"
+    query = query = f"SELECT * FROM CURSOS WHERE CURSOS.ID='{idcurso}';"
     cursor.execute(query)
     resultados = cursor.fetchall()
 
@@ -229,6 +229,33 @@ def sql_get_curso_info(idcurso):
     conn.close()
 
     return resultados
+
+def sql_get_alumnos(idcurso):
+    # Conecta a la base de datos
+    conn = sqlite3.connect('pure_valorant.db')
+    cursor = conn.cursor()
+    query = query = f"SELECT * FROM INSCRIPCIONES WHERE ID_CURSO='{idcurso}';"
+    cursor.execute(query)
+    resultados = cursor.fetchall()
+
+    # Cierra la conexión
+    conn.close()
+
+    return resultados
+
+def sql_get_nombre(idpersona):
+    # Conecta a la base de datos
+    conn = sqlite3.connect('pure_valorant.db')
+    cursor = conn.cursor()
+    query = query = f"SELECT * FROM CUENTAS WHERE ID='{idpersona}';"
+    cursor.execute(query)
+    resultados = cursor.fetchall()
+
+    # Cierra la conexión
+    conn.close()
+
+    return resultados
+
 
 
 
