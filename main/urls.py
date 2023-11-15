@@ -17,7 +17,9 @@ urlpatterns = [
     path('crearcurso/', views.crearcurso, name='crearcurso'),
     path('joincurso/', views.joincurso, name='joincurso'),
     path('cursos/<int:curso_id>/', views.detalle_curso, name='detalle_curso'),
-    path('crearencuesta/<int:curso_id>/', views.crear_encuesta, name='crear_encuesta')
+    path('crearencuesta/<int:curso_id>/', views.crear_encuesta, name='crear_encuesta'),
+    path('alumnos/<int:curso_id>/', views.alumnos, name='alumnos'),
+    path('respuestasencuesta/<int:curso_id>/', views.respuestasencuesta, name='respuestasencuesta')
     
 ]
 # Maneja errores 404

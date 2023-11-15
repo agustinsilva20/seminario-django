@@ -233,7 +233,7 @@ def sql_get_alumnos(idcurso):
     # Conecta a la base de datos
     conn = sqlite3.connect('pure_valorant.db')
     cursor = conn.cursor()
-    query = query = f"SELECT * FROM INSCRIPCIONES WHERE ID_CURSO='{idcurso}';"
+    query = query = f"SELECT USERNAME, MAIL FROM INSCRIPCIONES LEFT JOIN CUENTAS ON INSCRIPCIONES.ID_CUENTA = CUENTAS.ID WHERE ID_CURSO='{idcurso}';"
     cursor.execute(query)
     resultados = cursor.fetchall()
 
@@ -266,7 +266,25 @@ def sql_crear_encuesta(curso_id, pregunta1, pregunta2, pregunta3, pregunta4, pre
 
 
 
+def sql_get_encuesta(curso_id):
+    # Conecta a la base de datos
+    conn = sqlite3.connect('pure_valorant.db')
+    cursor = conn.cursor()
+    query = f"SELECT PREGUNTA1, PREGUNTA2, PREGUNTA3, PREGUNTA4, PREGUNTA5, PREGUNTA6, PREGUNTA7 FROM ENCUESTAS WHERE ID_CURSO='{curso_id}';"
+    cursor.execute(query)
+    resultados = cursor.fetchall()
+    conn.close()
+    return resultados
 
+def sql_get_respuestas_encuesta(curso_id):
+    # Conecta a la base de datos
+    conn = sqlite3.connect('pure_valorant.db')
+    cursor = conn.cursor()
+    query = f"SELECT * FROM RESPUESTAS_ENCUESTA WHERE ID_ENCUESTA='{curso_id}';"
+    cursor.execute(query)
+    resultados = cursor.fetchall()
+    conn.close()
+    return resultados 
 
     
 

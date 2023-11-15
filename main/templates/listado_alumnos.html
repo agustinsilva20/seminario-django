@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Alumos registrados</title>
+</head>
+<body>
+    <h1>Tabla de registros</h1>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Mail</th>
+                <!-- Agrega más encabezados según tu estructura de datos -->
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in alumnos %}
+            <tr>
+                <td>{{ user.0 }}</td>  <!-- user -->
+                <td>{{ user.1 }}</td>  <!-- mail -->
+
+
+                <!-- Agrega más celdas según tu estructura de datos -->
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Respuestas de encuesta inicial</title>
+</head>
+<body>
+    <h1>Tabla de Respuestas</h1>
+
+    <table border="1">
+        <thead>
+            <tr>
+                {% for pregunta in preguntas %}
+                <td>{{ pregunta }}</td>
+                {% endfor %}
+
+            </tr>
+        </thead>
+        <tbody>
+            {% for resp in respuestas %}
+            <tr>
+                <td>{{ resp.0 }}</td>  <!-- pregunta 2 -->
+                <td>{{ resp.1 }}</td>  <!-- pregunta 1 -->
+                <td>{{ resp.2 }}</td>  <!-- pregunta 3 -->
+                <td>{{ resp.3 }}</td>  <!-- pregunta 4 -->
+                <td>{{ resp.4 }}</td>  <!-- pregunta 5 -->
+                <td>{{ resp.5 }}</td>  <!-- pregunta 6 -->
+                <td>{{ resp.6 }}</td>  <!-- pregunta 7 -->
+
+                <!-- Agrega más celdas según tu estructura de datos -->
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

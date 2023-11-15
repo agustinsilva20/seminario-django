@@ -19,11 +19,13 @@
     <p>Materia: <span>{{materia}}</span></p>
     <p>Colegio: <span>{{colegio}}</span></p>
     <p>Curso: <span>{{curso}}</span></p>
-    <p>Cantidad de alumnos: <span>{{cantidad_alumnos}}</span></p><a href="" style="color: blue;">Acceder al listado de alumnos</a>
+    <p>Cantidad de alumnos: <span>{{cantidad_alumnos}}</span></p><a href="/alumnos/{{id}}" style="color: blue;">Acceder al listado de alumnos</a>
     <p>Docente: <span>{{docente}}</span></p>
     <p>ID: <span>{{id}}</span></p>
     {% if not encuesta_realizada %}
         <a href="/crearencuesta/{{id}}" style="color: blue;">Aun no has creado la encuesta para tus alumnos. Crear encuesta para los alumnos</a>
+    {% else %}
+    <a href="/respuestasencuesta/{{id}}" style="color: blue;">Ver las respuestas de la encuesta inicial</a>
     {% endif %}
 </body>
 </html>
