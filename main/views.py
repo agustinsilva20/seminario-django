@@ -178,8 +178,20 @@ def crearcurso(request):
     elif request.method == "POST":
         idcuenta = cuenta[0][0]
         nombrecurso = request.POST.get('nombrecurso')
-        nombrecurso = nombrecurso.replace(" ", "_") # Saco los espacios en blanco
-        sql_crear_curso(nombrecurso, idcuenta)
+        nombrecolegio = request.POST.get('nombrecolegio')
+        curso = request.POST.get('curso')
+
+        codigo_valido = False
+        while not codigo_valido:
+            # Creo un codigo
+            caracteres = string.ascii_letters + string.digits
+            codigo = ''.join(random.choice(caracteres) for _ in range(5))
+            codigo = codigo.upper()
+            # Valido que el codigo no exista
+            query = sql_verificar_codigo(codigo)
+            if len(query) == 0:
+                codigo_valido = True
+        sql_crear_curso(nombrecurso, idcuenta,nombrecolegio,curso, codigo)
         return redirect('home')
 
 @login_obligatorio  
@@ -190,6 +202,7 @@ def joincurso(request):
         idcurso = request.POST.get('id_curso') 
         sql_join_curso(idcurso, idcuenta)
     return redirect('home')
+
 class OAuthRedirectView(View):
     def get(self, request, *args, **kwargs):
         # URL de redirección a OAuth
@@ -215,10 +228,36 @@ def detalle_curso(request, curso_id):
     cuenta = sql_obtener_cuenta_by_hash(request.COOKIES.get('pure_valorant_token'))
     idcuenta = cuenta[0][0]
 
+    # Analizo si el usuario es Owner del curso
+    owner_query = sql_get_cursos_owner(curso_id)
+    owner = False
+    if len(owner_query)>0:
+        owner = True
+
     # Analizo si el usuario pertenece al curso
     query = sql_get_alumno_in_curso(curso_id, idcuenta)
     if len(query) == 0:
-        return HttpResponse(f'El usuario no pertenece a ese curso')
+        if not owner:
+            return HttpResponse(f'El usuario no pertenece a ese curso')
+        
+    # Obtengo la informacion del curso
+    curso_info = sql_get_curso_info(curso_id)
+
+    # Preparo el DTO
+    dto = {
+        "owner": owner,
+        "materia": curso_info[0][4],
+        "colegio": curso_info[0][6],
+        "curso": curso_info[0][7],
+        "codigo": curso_info[0][8],
+    }
+
+    
+    print(curso_info)
+    # Hacer algo con la información obtenida del curso
+    ...
+    
+
 
     return HttpResponse(f'Detalle del curso con ID: {curso_id}')
 

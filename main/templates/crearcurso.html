@@ -19,9 +19,12 @@
             {% csrf_token %}  <!-- Asegúrate de incluir el token CSRF si estás en un entorno de Django -->
 
             <label for="username">Nombre del curso:</label><br>
-            <p>{{error}}</p>
-            <input type="text" id="nombrecurso" name="nombrecurso" required value={{valor_user}}><br><br>
-            <input type="submit" value="Registrarse">
+            <input type="text" id="nombrecurso" name="nombrecurso" required ><br><br>
+            <label for="username">Nombre del colegio:</label><br>
+            <input type="text" id="nombrecolegio" name="nombrecolegio" required><br><br>
+            <label for="username">Curso:</label><br>
+            <input type="text" id="curso" name="curso" required><br><br>
+            <input type="submit" value="Crear un curso">
             
         </form>
     </div>

@@ -91,12 +91,22 @@ def sql_insert_hash(hash, username):
     conn.commit()
     conn.close()
 
-def sql_crear_curso(nombre, id_creador):
+def sql_crear_curso(nombrecurso, idcuenta,nombrecolegio,curso, codigo):
     conn = sqlite3.connect('pure_valorant.db')
     cursor = conn.cursor()
     # Inserta el nuevo curso
-    query = f' INSERT INTO CURSOS (NOMBRE_CURSO, ID_CUENTA) VALUES ("{nombre}", "{id_creador}")'
-    print(query)
+    query = f' INSERT INTO CURSOS (NOMBRE_CURSO, ID_CUENTA, COLEGIO, CURSO, CODIGO) VALUES ("{nombrecurso}", "{idcuenta}","{nombrecolegio}", "{curso}", "{codigo}")'
+
+    cursor.execute(query)
+    conn.commit()
+    conn.close()
+
+def sql_verificar_codigo(codigo):
+    conn = sqlite3.connect('pure_valorant.db')
+    cursor = conn.cursor()
+    # Inserta el nuevo curso
+    query = f' SELECT * FROM CURSOS WHERE CODIGO = "{codigo}")'
+
     cursor.execute(query)
     conn.commit()
     conn.close()
@@ -198,7 +208,20 @@ def sql_get_alumno_in_curso(idcurso, idpersona):
     conn.close()
 
     return resultados
-    
+
+def sql_get_curso_info(idcurso):
+    # Conecta a la base de datos
+    conn = sqlite3.connect('pure_valorant.db')
+    cursor = conn.cursor()
+    query = query = f"SELECT * FROM INSCRIPCIONES LEFT JOIN CURSOS ON INSCRIPCIONES.ID_CURSO = CURSOS.ID WHERE CURSOS.ID='{idcurso}';"
+    cursor.execute(query)
+    resultados = cursor.fetchall()
+
+    # Cierra la conexión
+    conn.close()
+
+    return resultados
+
 
 
 
