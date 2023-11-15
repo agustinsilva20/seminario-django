@@ -209,8 +209,9 @@ def detalle_curso(request, curso_id):
     idcuenta = cuenta[0][0]
 
     # Analizo si el usuario es Owner del curso
-    owner_query = sql_get_cursos_owner(curso_id)
+    owner_query = sql_soy_owner(idcuenta, curso_id)
     owner = False
+    print(owner_query)
     if len(owner_query)>0:
         owner = True
 
@@ -245,6 +246,7 @@ def detalle_curso(request, curso_id):
     
 
     if owner:
+        print("soy owner")
         encuesta = sql_get_encuesta(curso_id)
         if len(encuesta) > 0:
             dto["encuesta_realizada"] = True
@@ -260,7 +262,7 @@ def crear_encuesta(request,curso_id):
     cuenta = sql_obtener_cuenta_by_hash(request.COOKIES.get('pure_valorant_token'))
     idcuenta = cuenta[0][0]
     # Analizo si el usuario es Owner del curso
-    owner_query = sql_get_cursos_owner(curso_id)
+    owner_query = sql_soy_owner(idcuenta, curso_id)
     owner = True # Change
     if len(owner_query)>0:
         owner = True
@@ -293,7 +295,7 @@ def alumnos(request, curso_id):
     cuenta = sql_obtener_cuenta_by_hash(request.COOKIES.get('pure_valorant_token'))
     idcuenta = cuenta[0][0]
     # Analizo si el usuario es Owner del curso
-    owner_query = sql_get_cursos_owner(curso_id)
+    owner_query = owner_query = sql_soy_owner(idcuenta, curso_id)
     owner = True # Change
     if len(owner_query)>0:
         owner = True
@@ -312,7 +314,7 @@ def respuestasencuesta(request,curso_id):
     cuenta = sql_obtener_cuenta_by_hash(request.COOKIES.get('pure_valorant_token'))
     idcuenta = cuenta[0][0]
     # Analizo si el usuario es Owner del curso
-    owner_query = sql_get_cursos_owner(curso_id)
+    owner_query = sql_soy_owner(idcuenta, curso_id)
     owner = True # Change
     if len(owner_query)>0:
         owner = True
@@ -331,7 +333,7 @@ def feedback(request,curso_id):
     cuenta = sql_obtener_cuenta_by_hash(request.COOKIES.get('pure_valorant_token'))
     idcuenta = cuenta[0][0]
     # Analizo si el usuario es Owner del curso
-    owner_query = sql_get_cursos_owner(curso_id)
+    owner_query = sql_soy_owner(idcuenta, curso_id)
     owner = True # Change
     if len(owner_query)>0:
         owner = True

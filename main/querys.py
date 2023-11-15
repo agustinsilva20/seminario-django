@@ -280,7 +280,7 @@ def sql_get_respuestas_encuesta(curso_id):
     # Conecta a la base de datos
     conn = sqlite3.connect('pure_valorant.db')
     cursor = conn.cursor()
-    query = f"SELECT * FROM RESPUESTAS_ENCUESTA WHERE ID_ENCUESTA='{curso_id}';"
+    query = f"SELECT RESPUESTA1, RESPUESTA2, RESPUESTA3, RESPUESTA4, RESPUESTA5, RESPUESTA6, RESPUESTA7 FROM RESPUESTAS_ENCUESTA WHERE ID_ENCUESTA='{curso_id}';"
     cursor.execute(query)
     resultados = cursor.fetchall()
     conn.close()
@@ -316,6 +316,22 @@ def sql_agregar_respuesta(dto):
     cursor.execute(query)
     conn.commit()
     conn.close()
+
+def sql_soy_owner(idpersona, idcurso):
+    # Conecta a la base de datos
+    conn = sqlite3.connect('pure_valorant.db')
+    cursor = conn.cursor()
+
+    # Ejecuta la consulta
+    query = f"SELECT * FROM CURSOS WHERE ID_CUENTA='{idpersona}' and ID='{idcurso}';"
+    cursor.execute(query)
+
+    # Obtiene los resultados
+    resultados = cursor.fetchall()
+
+    # Cierra la conexión
+    conn.close()
+    return resultados # Devuelve una lista
 
     
     
