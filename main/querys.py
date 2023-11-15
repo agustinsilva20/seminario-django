@@ -284,8 +284,18 @@ def sql_get_respuestas_encuesta(curso_id):
     cursor.execute(query)
     resultados = cursor.fetchall()
     conn.close()
-    return resultados 
+    return resultados
 
+def sql_get_encuesta_respondida(cursoid, personaid):
+    # Conecta a la base de datos
+    conn = sqlite3.connect('pure_valorant.db')
+    cursor = conn.cursor()
+    query = f"SELECT * FROM RESPUESTAS_ENCUESTA WHERE ID_ENCUESTA='{cursoid}' AND ID_CUENTA='{personaid}';"
+    print(query)
+    cursor.execute(query)
+    resultados = cursor.fetchall()
+    conn.close()
+    return resultados
     
 
 

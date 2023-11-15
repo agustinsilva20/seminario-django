@@ -14,7 +14,7 @@
 
 </head>
 <body>
-    <h2>Pagina del owner</h2>
+    <h2>Pagina del Alumno</h2>
     <p>Codigo de invitacion: <span>{{codigo}}</span></p>
     <p>Materia: <span>{{materia}}</span></p>
     <p>Colegio: <span>{{colegio}}</span></p>
@@ -22,12 +22,11 @@
     <p>Cantidad de alumnos: <span>{{cantidad_alumnos}}</span></p><a href="/alumnos/{{id}}" style="color: blue;">Acceder al listado de alumnos</a>
     <p>Docente: <span>{{docente}}</span></p>
     <p>ID: <span>{{id}}</span></p>
-    {% if not encuesta_realizada %}
-        <a href="/crearencuesta/{{id}}" style="color: blue;">Aun no has creado la encuesta para tus alumnos. Crear encuesta para los alumnos</a>
-    {% else %}
-    <a href="/respuestasencuesta/{{id}}" style="color: blue;">Ver las respuestas de la encuesta inicial</a>
+
+    {% if not encuesta_realizada_alumno %}
+        <a href="/responderencuesta/{{id}}" style="color: blue;">Aun no has respondido la encuesta de Inicio de curso</a>
+
     {% endif %}
-    <br><br><br><br>
-    <a href="/feedback/{{id}}" style="color: blue;">Consultar el feedback de los alumnos</a>
+  
 </body>
 </html>

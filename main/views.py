@@ -236,18 +236,24 @@ def detalle_curso(request, curso_id):
         "codigo": curso_info[0][5],
         "cantidad_alumnos": len(alumnos),
         "docente": nombre[0][1],
-        "encuesta_realizada": False
+        "encuesta_realizada": False,
+        "encuesta_realizada_alumno": False,
+
     }
 
     # Averiguo si ya se creo la encuesta
-    encuesta = sql_get_encuesta(curso_id)
-    if len(encuesta) > 0:
-        dto["encuesta_realizada"] = True
+    
 
     if owner:
+        encuesta = sql_get_encuesta(curso_id)
+        if len(encuesta) > 0:
+            dto["encuesta_realizada"] = True
         return render(request, "curso_docente.html", dto)
     else:
-        return render(request, "curso_docente.html", dto)
+        encuesta = sql_get_encuesta_respondida(curso_id, idcuenta)
+        if len(encuesta) > 0:
+            dto["encuesta_realizada_alumno"] = True
+        return render(request, "curso_alumno.html", dto)
     
 @login_obligatorio
 def crear_encuesta(request,curso_id):
@@ -319,6 +325,41 @@ def respuestasencuesta(request,curso_id):
         "respuestas": sql_get_respuestas_encuesta(curso_id)
     }
     return render(request, "listado_respuestas_encuesta.html", dto)
+
+@login_obligatorio
+def feedback(request,curso_id):
+    cuenta = sql_obtener_cuenta_by_hash(request.COOKIES.get('pure_valorant_token'))
+    idcuenta = cuenta[0][0]
+    # Analizo si el usuario es Owner del curso
+    owner_query = sql_get_cursos_owner(curso_id)
+    owner = True # Change
+    if len(owner_query)>0:
+        owner = True
+
+    if not owner:
+        return HttpResponse(f'El usuario no es administrador del curso')
+    
+    dto = {
+        
+    }
+    return render(request, "feedback.html", dto)
+
+@login_obligatorio
+def responderencuesta(request,curso_id):
+    cuenta = sql_obtener_cuenta_by_hash(request.COOKIES.get('pure_valorant_token'))
+    idcuenta = cuenta[0][0]
+    # Analizo si el usuario pertenece al curso
+    query = sql_get_alumno_in_curso(curso_id, idcuenta)
+    if len(query) == 0:
+            return HttpResponse(f'El usuario no pertenece a ese curso')
+    
+    if request.method == "GET":
+        dto = {
+            "preguntas": sql_get_encuesta(curso_id)[0],
+            "id_curso": curso_id
+        }
+        return render(request, "responder_encuesta.html", dto)
+
 
 
 
