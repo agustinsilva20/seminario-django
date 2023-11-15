@@ -95,11 +95,12 @@ def sql_crear_curso(nombre, id_creador):
     conn = sqlite3.connect('pure_valorant.db')
     cursor = conn.cursor()
     # Inserta el nuevo curso
-    query = f" INSERT INTO CURSOS (NOMBRE_CURSO, ID_CURSO) VALUES ({nombre}, {id_creador})"
-
+    query = f' INSERT INTO CURSOS (NOMBRE_CURSO, ID_CUENTA) VALUES ("{nombre}", "{id_creador}")'
+    print(query)
     cursor.execute(query)
     conn.commit()
     conn.close()
+
 
 
 def sql_unirse_curso(id_curso, id_persona):
@@ -143,3 +144,51 @@ def sql_get_cursos_alumno(id_persona):
     # Cierra la conexión
     conn.close()
     return resultados # Devuelve una lista
+
+def sql_join_curso(idcurso, idcuenta):
+    # Conecta a la base de datos
+    conn = sqlite3.connect('pure_valorant.db')
+    cursor = conn.cursor()
+
+    # Verifico si existe el curso
+    query = f"SELECT * FROM CURSOS WHERE ID='{idcurso}';"
+    cursor.execute(query)
+    resultados = cursor.fetchall()
+
+    if len(resultados) == 0:
+        print("El curso no existe")
+        return
+    
+    # Verifico que el alumno no esta inscripto
+    query = f"SELECT * FROM INSCRIPCIONES LEFT JOIN CURSOS ON INSCRIPCIONES.ID_CURSO = CURSOS.ID WHERE INSCRIPCIONES.ID_CUENTA='{idcuenta}' AND CURSOS.ID='{idcurso}';"
+    cursor.execute(query)
+    resultados = cursor.fetchall()
+
+    if len(resultados)>0:
+        print("El alumno ya se encuentra ingresado")
+        return
+    
+    # Verifica que no sea owner
+    query = f"SELECT * FROM CURSOS WHERE ID_CUENTA='{idcuenta}' AND ID='{idcurso}';"
+    cursor.execute(query)
+    resultados = cursor.fetchall()
+    if len(resultados)>0:
+        print("El usuario es owner")
+        return
+
+    
+    # Inserto el nuevo registro
+    print("Insertando alumno")
+    query = f"INSERT INTO INSCRIPCIONES (ID_CURSO, ID_CUENTA) VALUES ({idcurso}, {idcuenta})"
+    cursor.execute(query)
+    conn.commit()
+    conn.close()
+    
+
+
+
+    
+
+
+    
+

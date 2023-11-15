@@ -24,11 +24,27 @@
         <section class="">
             <h2>Home page</h2>
             <br>
+            <p>Bienvenido <span>{{nombre_usuario}}</span></p>
             <br>
             <h1>Tus cursos creados</h1>
-            <p>{{curso_owner}}</p>
+            <a href="/crearcurso" style="color: blue;">Crear un curso nuevo</a>
+            <p>{{curso_owner_error}}</p>
+            <ul>
+                {% for item in curso_owner %}
+                    <li>{{ item.1 }}</li>
+                {% endfor %}
+            </ul>
             <h1>Tus cursos</h1>
-            <p>{{curso_alumno}}</p>
+            <form id="cursojoin" method="post" action="/joincurso/">
+                {% csrf_token %}  <!-- Asegúrate de incluir el token CSRF si estás en un entorno de Django -->
+                <input type="text" id="id_curso" name="id_curso" required placeholder="Codigo de curso">
+                <input type="submit" value="Unirse a un curso">
+
+            </form>
+            <p>{{curso_alumno_error}}</p>
+            {% for item in curso_alumno %}
+                    <li>{{ item.1 }}</li>
+            {% endfor %}
             <footer>
                 footer
             </footer>

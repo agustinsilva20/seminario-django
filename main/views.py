@@ -22,23 +22,27 @@ def admin(request):
 def home(request):
     cuenta = sql_obtener_cuenta_by_hash(request.COOKIES.get('pure_valorant_token'))
     dto = {
-            "curso_owner": "",
-            "curso_alumno": ""
+            "curso_owner": [],
+            "curso_alumno": [],
+            "nombre_usuario": "",
+            "curso_owner_error": "",
+            "curso_alumno_error": "",
         }
     try:
         id_persona = cuenta[0][0]
+        dto["nombre_usuario"] = cuenta[0][1]
 
         # Obtengo los cursos
         curso_owner = sql_get_cursos_owner(id_persona)
         curso_alumno = sql_get_cursos_alumno(id_persona)
 
         if len(curso_owner) == 0:
-            dto["curso_owner"] = "No tienes cursos creados"
+            dto["curso_owner_error"] = "No tienes cursos creados"
         else:
             dto["curso_owner"] = curso_owner
         
-        if len(curso_owner) == 0:
-            dto["curso_alumno"] = "No perteneces a ningun curso"
+        if len(curso_alumno) == 0:
+            dto["curso_alumno_error"] = "No perteneces a ningun curso"
         else:
             dto["curso_alumno"] = curso_alumno
         print(curso_alumno)
@@ -161,6 +165,30 @@ def registro(request):
         sql_crear_cuenta(username,password, email)
         return render(request, "registro_exito.html", dto_error)
 
+@login_obligatorio
+def crearcurso(request):
+    dto = {
+        "error": "",
+        "valor_user":""
+    }
+    cuenta = sql_obtener_cuenta_by_hash(request.COOKIES.get('pure_valorant_token'))
+
+    if request.method == 'GET':
+        return render(request, "crearcurso.html", dto)
+    elif request.method == "POST":
+        idcuenta = cuenta[0][0]
+        nombrecurso = request.POST.get('nombrecurso')
+        nombrecurso = nombrecurso.replace(" ", "_") # Saco los espacios en blanco
+        sql_crear_curso(nombrecurso, idcuenta)
+        return redirect('home')
+    
+def joincurso(request):
+    if request.method == "POST":
+        cuenta = sql_obtener_cuenta_by_hash(request.COOKIES.get('pure_valorant_token'))
+        idcuenta = cuenta[0][0]
+        idcurso = request.POST.get('id_curso') 
+        sql_join_curso(idcurso, idcuenta)
+    return redirect('home')
 class OAuthRedirectView(View):
     def get(self, request, *args, **kwargs):
         # URL de redirección a OAuth
