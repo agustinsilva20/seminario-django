@@ -353,12 +353,43 @@ def responderencuesta(request,curso_id):
     if len(query) == 0:
             return HttpResponse(f'El usuario no pertenece a ese curso')
     
+    # Analizo que el usuario no haya respondido previamente
+    query = sql_get_encuesta_respondida(curso_id, idcuenta)
+    if len(query) > 0:
+        return HttpResponse("El usuario ya ha respondido previamente")
+    
     if request.method == "GET":
         dto = {
             "preguntas": sql_get_encuesta(curso_id)[0],
             "id_curso": curso_id
         }
         return render(request, "responder_encuesta.html", dto)
+    elif request.method == "POST":
+        id_cuenta = idcuenta
+        id_encuesta = curso_id
+        respuesta1 = request.POST.get('pregunta1')
+        respuesta2 = request.POST.get('pregunta2')
+        respuesta3 = request.POST.get('pregunta3')
+        respuesta4 = request.POST.get('pregunta4')
+        respuesta5 = request.POST.get('pregunta5')
+        respuesta6 = request.POST.get('pregunta6')
+        respuesta7 = request.POST.get('pregunta7')
+        dto = {
+            "id_cuenta": id_cuenta,
+            "id_encuesta": id_encuesta,
+            "respuesta1": respuesta1,
+            "respuesta2": respuesta2,
+            "respuesta3": respuesta3,
+            "respuesta4": respuesta4,
+            "respuesta5": respuesta5,
+            "respuesta6": respuesta6,
+            "respuesta7": respuesta7
+        }
+        sql_agregar_respuesta(dto)
+        return redirect('home')
+        
+
+
 
 
 

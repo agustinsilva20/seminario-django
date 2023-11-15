@@ -291,11 +291,33 @@ def sql_get_encuesta_respondida(cursoid, personaid):
     conn = sqlite3.connect('pure_valorant.db')
     cursor = conn.cursor()
     query = f"SELECT * FROM RESPUESTAS_ENCUESTA WHERE ID_ENCUESTA='{cursoid}' AND ID_CUENTA='{personaid}';"
-    print(query)
+
     cursor.execute(query)
     resultados = cursor.fetchall()
     conn.close()
+    print(resultados)
     return resultados
+
+def sql_agregar_respuesta(dto):
+    id_cuenta = dto["id_cuenta"]
+    id_encuesta = dto["id_encuesta"]
+    respuesta1 = dto["respuesta1"]
+    respuesta2 = dto["respuesta2"]
+    respuesta3 = dto["respuesta3"]
+    respuesta4 = dto["respuesta4"]
+    respuesta5 = dto["respuesta5"]
+    respuesta6 = dto["respuesta6"]
+    respuesta7 = dto["respuesta7"]
+
+    # Conecta a la base de datos
+    conn = sqlite3.connect('pure_valorant.db')
+    cursor = conn.cursor()
+    query = f' INSERT INTO RESPUESTAS_ENCUESTA (ID_CUENTA, ID_ENCUESTA, RESPUESTA1, RESPUESTA2, RESPUESTA3,RESPUESTA4,RESPUESTA5,RESPUESTA6,RESPUESTA7) VALUES ("{id_cuenta}", "{id_encuesta}","{respuesta1}","{respuesta2}","{respuesta3}","{respuesta4}","{respuesta5}","{respuesta6}","{respuesta7}")'
+    cursor.execute(query)
+    conn.commit()
+    conn.close()
+
+    
     
 
 

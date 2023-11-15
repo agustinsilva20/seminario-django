@@ -1,0 +1,35 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Registro</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/inicio.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/login.css' %}">
+
+</head>
+<body>
+
+    <div class="form-login">
+        <h1>Responder preguntas</h1>
+
+        <form id="registrationForm" method="post" action="/responderencuesta/{{id_curso}}/">
+            {% csrf_token %}  <!-- Asegúrate de incluir el token CSRF si estás en un entorno de Django -->
+            
+            {% for pregunta in preguntas %}
+            {% with numero_pregunta=forloop.counter %}
+                <label for="pregunta{{ numero_pregunta }}">{{ pregunta }}</label><br>
+                <input type="text" id="pregunta{{ numero_pregunta }}" name="pregunta{{ numero_pregunta }}" required><br><br>
+                {% endwith %}
+            {% endfor %}
+           
+            <input type="submit" value="Responder encuesta">
+            
+        </form>
+    </div>
+
+
+</body>
+</html>
